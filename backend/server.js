@@ -11,21 +11,28 @@ import orderRouter from './routes/orderRoute.js'
 // App Config
 const app = express()
 const port = process.env.PORT || 4000
+
 connectDB()
 connectCloudinary()
 
 // middlewares
 app.use(express.json())
-app.use(cors())
+
+// CORS setup
+app.use(cors({
+    origin: 'https://classic-styles.onrender.com', // your frontend URL
+    methods: ['GET','POST','PUT','DELETE'],
+    credentials: true // needed if frontend uses cookies
+}))
 
 // api endpoints
-app.use('/api/user',userRouter)
-app.use('/api/product',productRouter)
-app.use('/api/cart',cartRouter)
-app.use('/api/order',orderRouter)
+app.use('/api/user', userRouter)
+app.use('/api/product', productRouter)
+app.use('/api/cart', cartRouter)
+app.use('/api/order', orderRouter)
 
-app.get('/',(req,res)=>{
+app.get('/', (req, res) => {
     res.send("API Working")
 })
 
-app.listen(port, ()=> console.log('Server started on PORT : '+ port))
+app.listen(port, () => console.log('Server started on PORT : ' + port))
